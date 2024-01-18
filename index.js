@@ -18,12 +18,18 @@ function isTimeZoneValid(timeZone) {
 
 const getMsg = async function(room){
     const response = await fetch(`http://3dstownsquare.com/chat/fmsg.php?room=${encodeURIComponent(room)}`);
-    const jsona = await response.json();
-    botMain(jsona, room);
-    if(checkOnce === false){
-        console.log(`INFO: ${usr} has been started. Listening on room "${room}"`);
-        checkOnce = true;
+    try {
+        const jsona = await response.json();
+        botMain(jsona, room);
+        if(checkOnce === false){
+            console.log(`INFO: ${usr} has been started. Listening on room "${room}"`);
+            checkOnce = true;
+        }
+    } catch(error){
+        console.log(error);
+
     }
+
 };
 const sendMessage = async function(username, color, message, room){
     await fetch("http://3dstownsquare.com/chat/send.php", {
@@ -70,7 +76,12 @@ const botMain = function(jsona, room){
                 } else if(cont === `${pre}ping`){
                     sendMessage(usr, clr, `Pong! ${Math.floor(new Date().getTime()) - (jsona["time"])}ms`, room);
                 } else if(cont === `${pre}help`){
-                    sendMessage(usr, clr, `Here is a list of commands: ${pre}ping: Check ping time from message to bot, ${pre}tz: Check timezone in another area`, room);
+                    sendMessage(usr, clr, `Here is a list of commands: ${pre}ping: Check ping time from message to bot, ${pre}tz: Check timezone in another area, ${pre}say: Get the bot to say something.`, room);
+                    sendMessage(usr, clr, `${pre}banana: Pick a number from 1 to 255.`, room);
+                } else if(cont === `${pre}banana`){
+                    sendMessage(usr, clr, `Banana Number: ${Math.floor(Math.random() * (255 - 1) + 1)}`, room);
+                } else if(cont.startsWith(`${pre}say `)){
+                    sendMessage(usr, clr, cont.replace(`${pre}say `, ""), room)
                 } else {
                     sendMessage(usr, clr, `Unknown command. Do ${pre}help for a list of commands.`, room);
                 }
