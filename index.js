@@ -49,9 +49,7 @@ const botMain = function(jsona, room){
         if(cont.startsWith(pre)){
             if(usernme !== usr & (time !== lastmsgtime)){
                 lastmsgtime = jsona["time"];
-                if(cont.startsWith(`${pre}time`)){
-                    sendMessage(usr, clr, `Your message time was ${jsona["time"]}. Response time is ${jsona["time"] - (new Date().getTime() / 1000)}s`, room);
-                } else if(cont.startsWith(`${pre}tz `)){
+                if(cont.startsWith(`${pre}tz `)){
                     const tz = cont.replace(`${pre}tz `, "");
                     if(isTimeZoneValid(tz)){
                         const options = {
@@ -69,8 +67,12 @@ const botMain = function(jsona, room){
                     
                     
                    
+                } else if(cont === `${pre}ping`){
+                    sendMessage(usr, clr, `Pong! ${Math.floor(new Date().getTime()) - (jsona["time"])}ms`, room);
+                } else if(cont === `${pre}help`){
+                    sendMessage(usr, clr, `Here is a list of commands: ${pre}ping: Check ping time from message to bot, ${pre}tz: Check timezone in another area`, room);
                 } else {
-                    sendMessage(usr, clr, "Test (written in NodeJS)", room);
+                    sendMessage(usr, clr, `Unknown command. Do ${pre}help for a list of commands.`, room);
                 }
                 
             }
