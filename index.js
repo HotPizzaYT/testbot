@@ -77,11 +77,15 @@ const botMain = function(jsona, room){
                     sendMessage(usr, clr, `Pong! ${Math.floor(new Date().getTime()) - (jsona["time"])}ms`, room);
                 } else if(cont === `${pre}help`){
                     sendMessage(usr, clr, `Here is a list of commands: ${pre}ping: Check ping time from message to bot, ${pre}tz: Check timezone in another area, ${pre}say: Get the bot to say something.`, room);
-                    sendMessage(usr, clr, `${pre}banana: Pick a number from 1 to 255.`, room);
+                    sendMessage(usr, clr, `${pre}banana: Pick a number from 1 to 255, ${pre}8ball: Ask 8 ball a question`, room);
                 } else if(cont === `${pre}banana`){
                     sendMessage(usr, clr, `Banana Number: ${Math.floor(Math.random() * (255 - 1) + 1)}`, room);
                 } else if(cont.startsWith(`${pre}say `)){
                     sendMessage(usr, clr, cont.replace(`${pre}say `, ""), room)
+                } else if(cont.startsWith(`${pre}8ball `)){
+                    const ans = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy, try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
+                    const random = Math.floor(Math.random() * ans.length);
+                    sendMessage(usr, clr, ans[random], room);
                 } else {
                     sendMessage(usr, clr, `Unknown command. Do ${pre}help for a list of commands.`, room);
                 }
